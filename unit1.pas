@@ -210,7 +210,7 @@ var
   
 begin 
   
-  if not (menu_status = 13)
+  if not ((menu_status = 13) or (menu_status = 14))
   then
     exit;
    
@@ -252,7 +252,7 @@ var
   
 begin 
   
-  if not (menu_status = 13)
+  if not ((menu_status = 13) or (menu_status = 14))
   then
     exit;
     
@@ -294,7 +294,7 @@ var
   
 begin 
   
-  if not (menu_status = 13)
+  if not ((menu_status = 13) or (menu_status = 14))
   then
     exit;
     
@@ -305,7 +305,9 @@ begin
     begin
        if (length(salary)) < 16 then
        begin
-         salary:= salary + LowerCase(chr(key));
+         if not ((salary = '') and (key = 48))
+         then
+           salary:= salary + LowerCase(chr(key));
          TextOut(field_x1 + 2, field3_y1 + 2, salary); 
        end;
     end;
@@ -317,7 +319,7 @@ begin
         salary:= str_help;
         SetBrushColor(clWhite);
         FillRectangle(field_x1 + 2, field3_y1 + 2, field_x2 - 2, field3_y2 - 2);
-        TextOut(field_x1 + 2, field2_y1 + 2, salary);
+        TextOut(field_x1 + 2, field3_y1 + 2, salary);
       end;
   end;
   
@@ -387,6 +389,22 @@ Var
   i: integer;
   
 Begin
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  if (amount = 0)
+  then
+  begin
+    SetFontColor(clRed);
+    SetBrushColor(clWhite);
+    SetFontSize(16);
+    TextOut(210, 20, 'Записей нет');
+    
+    exit;
+  end;
+  
   ViewMenu;
   
   SetBrushColor(clWhite);
@@ -425,10 +443,7 @@ Begin
   
   SetFontStyle(fsNormal);
   
-  assign(f, file_amount_name);
-  reset(f);
-  readln(f, amount);
-  close(f);
+  
   
   last_record:= 0;
   
@@ -878,11 +893,7 @@ Begin
   
 end;
 
-Procedure AddRecord();
-Var
-  f: text;
-  new_person: person;
-  
+Procedure AddRecord();  
 Begin
   menu_status:= 13; // admin add record;
   
@@ -916,6 +927,15 @@ Var
   new_person: person;
   
 Begin
+  
+  if (name = '') or (job = '') or (salary = '')
+  then
+  begin
+    SetFontColor(clRed);
+    SetFontSize(12);
+    TextOut(520, 20, 'Заполните все поля!');
+    exit;
+  end;
   
   assign(f, file_amount_name);
   reset(f);
@@ -961,7 +981,166 @@ Begin
   SetFontSize(16);
   TextOut(210, 20, 'Запись добавлена');
   
+  name:= '';
+  job:= '';
+  salary:= '';
+  
 end;
+
+Procedure DeleteRecord();
+Begin
+  menu_status:= 14; // admin delete record;
+  
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 195, 600);
+  FillRectangle(205, 20, 985, 585);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Удалить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
+  
+  SetFontColor(clBlack);
+  SetFontSize(12);
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  
+  TextOut(210, 20, 'Фамилия: ');
+  DrawRectangle(field_x1, field1_y1, field_x2, field1_y2);
+  
+  TextOut(210, 100, 'Должность: ');
+  DrawRectangle(field_x1, field2_y1, field_x2, field2_y2);
+  
+  TextOut(210, 180, 'Оклад: ');
+  DrawRectangle(field_x1, field3_y1, field_x2, field3_y2);
+end;
+
+Procedure ConfirmDeletion();
+Begin
+  if (name = '') or (job = '') or (salary = '')
+  then
+  begin
+    SetFontColor(clRed);
+    SetFontSize(12);
+    TextOut(520, 20, 'Заполните все поля!');
+    exit;
+  end;
+  
+  menu_status:= 15; // confirm deletion
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 195, 600);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Подтвердить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
+end;
+
+Procedure CompleteDelete();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  i: integer;
+  check_deletion: boolean;
+
+Begin
+  check_deletion:= false;
+  
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  assign(f, file_name);
+  reset(f);
+  
+  for i:= 1 to amount do
+  begin
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+    if (persons[i].surname = name) and (persons[i].job = job) and (persons[i].salary = StrToInt(salary)) and (check_deletion = false)
+    then
+    begin
+      persons[i].surname:= '';
+      persons[i].job:= '';
+      persons[i].salary:= 0;
+      persons[i].soc_ins := 0;
+      persons[i].pens_fund := 0;
+      persons[i].sick_list := 0;
+      persons[i].union := 0;
+      persons[i].on_hands := 0;
+      check_deletion:= true;
+      
+    end;
+    
+  end;
+  
+  close(f);
+  rewrite(f);
+  
+  for i:= 1 to amount do
+  begin
+    
+    if (persons[i].surname <> '')
+    then
+    begin
+      writeln(f, persons[i].surname);
+      writeln(f, persons[i].job);
+      writeln(f, persons[i].salary);
+      writeln(f, persons[i].tax);
+      writeln(f, persons[i].soc_ins);
+      writeln(f, persons[i].pens_fund);
+      writeln(f, persons[i].sick_list);
+      writeln(f, persons[i].union);
+      writeln(f, persons[i].on_hands);
+      
+    end;
+    
+    
+  end;
+  
+  close(f);
+    
+  if (check_deletion)
+  then
+  begin
+    amount:= amount - 1;
+    
+    assign(f, file_amount_name);
+    rewrite(f);
+    writeln(f, amount);
+    close(f);
+    
+    AdminMainMenu;
+  
+    SetFontColor(clBlack);
+    SetBrushColor(clWhite);
+    SetFontSize(16);
+    TextOut(210, 20, 'Запись удалена');
+    
+    name:= '';
+    job:= '';
+    salary:= '';
+  end
+  else
+  begin
+    AdminMainMenu;
+  
+    SetFontColor(clRed);
+    SetBrushColor(clWhite);
+    SetFontSize(16);
+    TextOut(210, 20, 'Запись не найдена');
+    
+    name:= '';
+    job:= '';
+    salary:= '';
+  end;
+  
+end;  
 
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
@@ -985,7 +1164,7 @@ Begin
           
           if (y > button2_y1) and (y < button2_y2)
           then
-            ; // delete
+            DeleteRecord;
           
           if (y > button3_y1) and (y < button3_y2)
           then
@@ -1055,6 +1234,71 @@ Begin
             SetBrushColor(clWhite);
             FillRectangle(field_x1 + 2, field3_y1 + 2, field_x2 - 2, field3_y2 - 2);
           end;
+        end;
+      end;
+     
+     14: // admin delete record
+       begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            ConfirmDeletion;  
+            
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            AdminMainMenu;      
+          
+        end;
+          
+          if (x > field_x1) and (x < field_x2)
+          then
+          begin        
+          
+          if (y > field1_y1) and (y < field1_y2)
+          then
+          begin
+            name:= '';
+            OnKeyDown:= InputName;
+            FillRectangle(field_x1 + 2, field1_y1 + 2, field_x2 - 2, field1_y2 - 2);
+            TextOut(field_x1 + 2, field1_y1 + 2, name);
+          end;
+          
+          if (y > field2_y1) and (y < field2_y2)
+          then
+          begin
+            job:= '';
+            OnKeyDown:= InputJob;
+            SetBrushColor(clWhite);
+            FillRectangle(field_x1 + 2, field2_y1 + 2, field_x2 - 2, field2_y2 - 2);
+          end;
+          
+          if (y > field3_y1) and (y < field3_y2)
+          then
+          begin
+            salary:= '';
+            OnKeyDown:= InputSalary;
+            SetBrushColor(clWhite);
+            FillRectangle(field_x1 + 2, field3_y1 + 2, field_x2 - 2, field3_y2 - 2);
+          end;
+        end;
+                  
+       end;
+     
+     15: // confirm deletion
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            CompleteDelete;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            AdminMainMenu;
+          
         end;
       end;
      
