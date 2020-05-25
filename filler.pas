@@ -5,34 +5,57 @@ Uses
   
 Var
   f: text;
-  persons: array[1..5] of person;
+  persons: array[1..50] of person;
   i: integer;
   
 Begin
   assign(f, file_name);
   rewrite(f);
   
-  persons[1].surname := 'Питонов';
-  persons[1].job := 'Программист';
-  persons[1].salary := 50000;
+  for i:= 1 to 50 do
+  begin
   
-  persons[2].surname := 'Считалова';
-  persons[2].job := 'Бухгалтер';
-  persons[2].salary := 25000;
+  case (i mod 5) of
+    
+    1:
+    begin
+      persons[i].surname := 'Питонов';
+      persons[i].job := 'Программист';
+      persons[i].salary := 50000;
+    end;
+    
+    2:
+    begin
+      persons[i].surname := 'Считалова';
+      persons[i].job := 'Бухгалтер';
+      persons[i].salary := 25000;
+    end;
+    
+    3:
+    begin
+      persons[i].surname := 'Заслоняев';
+      persons[i].job := 'Охранник';
+      persons[i].salary := 15000;
+    end;
+    
+    4:
+    begin
+      persons[i].surname := 'Джонсон';
+      persons[i].job := 'Переводчик';
+      persons[i].salary := 50000;
+    end;
+    
+    0:
+    begin
+      persons[i].surname := 'Боссович';
+      persons[i].job := 'Директор';
+      persons[i].salary := 100000;
+    end;
   
-  persons[3].surname := 'Заслоняев';
-  persons[3].job := 'Охранник';
-  persons[3].salary := 15000;
+  end;
+  end;
   
-  persons[4].surname := 'Джонсон';
-  persons[4].job := 'Переводчик';
-  persons[4].salary := 50000;
-  
-  persons[5].surname := 'Боссович';
-  persons[5].job := 'Директор';
-  persons[5].salary := 100000;
-  
-  for i:= 1 to 5 do
+  for i:= 1 to 50 do
   begin
     persons[i].tax := (tax_perc * persons[i].salary) / 100;
     persons[i].soc_ins := (soc_ins_perc * persons[i].salary) / 100;
@@ -43,7 +66,7 @@ Begin
     
   end;
   
-  for i:= 1 to 5 do
+  for i:= 1 to 50 do
   begin
     writeln(f, persons[i].surname);
     writeln(f, persons[i].job);
@@ -62,7 +85,7 @@ Begin
   
   assign(f, file_amount_name);
   rewrite(f);
-  writeln(f, 5);
+  writeln(f, 50);
   close(f);
   
 end.

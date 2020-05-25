@@ -54,6 +54,7 @@ Type
 
 Var
   menu_status: byte;
+  last_record: integer;
 
 Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
 Begin
@@ -141,6 +142,14 @@ Begin
   for i:= 1 to amount do
   begin
     
+    if (i = 14)
+    then
+    begin
+      last_record:= i - 1;
+      close(f);
+      exit;
+    end;
+    
     readln(f, persons[i].surname);
     readln(f, persons[i].job);
     readln(f, persons[i].salary);
@@ -166,7 +175,217 @@ Begin
     
 end;
 
+Procedure ShowPrevious();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  i: integer;
+  k: integer;
+  
+Begin
+  ViewMenu;
+  
+  menu_status := 1;
+  
+  SetBrushColor(clWhite);
+  FillRectangle(200, 10, 990, 590);
+    
+  SetFontColor(clBlack);
+  SetFontSize(10);
+  SetBrushColor(clWhite);
+  
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  DrawRectangle(200, 10, 330, 590);
+  DrawRectangle(200, 10, 450, 590);
+  DrawRectangle(200, 10, 520, 590);
+  DrawRectangle(200, 10, 590, 590);
+  DrawRectangle(200, 10, 660, 590);
+  DrawRectangle(200, 10, 730, 590);
+  DrawRectangle(200, 10, 800, 590);
+  DrawRectangle(200, 10, 870, 590);
+  DrawRectangle(200, 10, 990, 590);
+  
+  DrawRectangle(200, 10, 990, 45);
+  
+  SetFontStyle(fsBold);
+  
+  TextOut(220, 20, 'Фамилия');
+  TextOut(340, 20, 'Должность');
+  TextOut(460, 20, 'Оклад');
+  TextOut(530, 20, 'Налог');
+  TextOut(595, 20, 'Соцстрах');
+  TextOut(670, 20, 'Пенс. ф.');
+  TextOut(740, 20, 'Б. лист');
+  TextOut(805, 20, 'Профком');
+  TextOut(880, 20, 'На руки');
+  
+  
+  SetFontStyle(fsNormal);
+  
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  assign(f, file_name);
+  reset(f);
+  k:= 1;
+  
+  for i:= 1 to amount do
+  begin
+    
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+    if (last_record - i < 26)
+    then
+    begin
+      
+      if (k = 14)
+      then
+      begin
+        close(f);
+        last_record:= i - 1;
+        exit;
+      end;
+      
+      TextOut(220, 40 * k + 20, persons[i].surname);
+      TextOut(340, 40 * k + 20, persons[i].job);
+      TextOut(460, 40 * k + 20, IntToStr(persons[i].salary));
+      TextOut(530, 40 * k + 20, IntToStr(round(persons[i].tax)));
+      TextOut(600, 40 * k + 20, IntToStr(round(persons[i].soc_ins)));
+      TextOut(670, 40 * k + 20, IntToStr(round(persons[i].pens_fund)));
+      TextOut(740, 40 * k + 20, IntToStr(round(persons[i].sick_list)));
+      TextOut(810, 40 * k + 20, IntToStr(round(persons[i].union)));
+      TextOut(880, 40 * k + 20, IntToStr(round(persons[i].on_hands)));
+      
+      k:= k + 1;
+    
+    end;
+    
+  end;
+  
+  last_record:= i;
+  
+end;
+
+Procedure ShowNext();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  i: integer;
+  k: integer;
+  
+Begin
+  ViewMenu;
+  
+  menu_status := 1;
+  
+  SetBrushColor(clWhite);
+  FillRectangle(200, 10, 990, 590);
+    
+  SetFontColor(clBlack);
+  SetFontSize(10);
+  SetBrushColor(clWhite);
+  
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  DrawRectangle(200, 10, 330, 590);
+  DrawRectangle(200, 10, 450, 590);
+  DrawRectangle(200, 10, 520, 590);
+  DrawRectangle(200, 10, 590, 590);
+  DrawRectangle(200, 10, 660, 590);
+  DrawRectangle(200, 10, 730, 590);
+  DrawRectangle(200, 10, 800, 590);
+  DrawRectangle(200, 10, 870, 590);
+  DrawRectangle(200, 10, 990, 590);
+  
+  DrawRectangle(200, 10, 990, 45);
+  
+  SetFontStyle(fsBold);
+  
+  TextOut(220, 20, 'Фамилия');
+  TextOut(340, 20, 'Должность');
+  TextOut(460, 20, 'Оклад');
+  TextOut(530, 20, 'Налог');
+  TextOut(595, 20, 'Соцстрах');
+  TextOut(670, 20, 'Пенс. ф.');
+  TextOut(740, 20, 'Б. лист');
+  TextOut(805, 20, 'Профком');
+  TextOut(880, 20, 'На руки');
+  
+  
+  SetFontStyle(fsNormal);
+  
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  assign(f, file_name);
+  reset(f);
+  k:= 1;
+  
+  for i:= 1 to amount do
+  begin
+    
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+    if (i > last_record)
+    then
+    begin
+      
+      if (k = 14)
+      then
+      begin
+        close(f);
+        last_record:= i - 1;
+        exit;
+      end;
+      
+      TextOut(220, 40 * k + 20, persons[i].surname);
+      TextOut(340, 40 * k + 20, persons[i].job);
+      TextOut(460, 40 * k + 20, IntToStr(persons[i].salary));
+      TextOut(530, 40 * k + 20, IntToStr(round(persons[i].tax)));
+      TextOut(600, 40 * k + 20, IntToStr(round(persons[i].soc_ins)));
+      TextOut(670, 40 * k + 20, IntToStr(round(persons[i].pens_fund)));
+      TextOut(740, 40 * k + 20, IntToStr(round(persons[i].sick_list)));
+      TextOut(810, 40 * k + 20, IntToStr(round(persons[i].union)));
+      TextOut(880, 40 * k + 20, IntToStr(round(persons[i].on_hands)));
+      
+      k:= k + 1;
+    
+    end;
+    
+  end;
+  
+  last_record:= i;
+  
+end;
+
 Procedure MenuMouseDown(x, y, mousebutton: integer);
+var
+  f: text;
+  amount: integer;
+  
 Begin
   if (mousebutton = 2)
   then
@@ -198,6 +417,52 @@ Begin
         
       end;
     
+    1: // view menu
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2) // next
+          then
+          begin
+            assign(f, file_amount_name);
+            reset(f);
+            readln(f, amount);
+            close(f);
+            
+            if (last_record < amount)
+            then
+              ShowNext;
+          end;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            begin
+            if (y > button2_y1) and (y < button2_y2) // previous
+            then
+            begin
+              assign(f, file_amount_name);
+              reset(f);
+              readln(f, amount);
+              close(f);
+              
+              if (last_record > 13)
+              then
+                ShowPrevious;
+            end;
+          
+          if (y > button3_y1) and (y < button3_y2)
+          then
+            TextOut(250, 50, 'Action 3');
+          
+          if (y > button4_y1) and (y < button4_y2)
+          then
+            TextOut(250, 50, 'Action 4');
+          
+        end;
+        
+      end;
+    end;
   end;
   
 end;
@@ -222,4 +487,6 @@ Begin
 end;
 
 Begin
+  last_record:= 0;
+  
 end.
