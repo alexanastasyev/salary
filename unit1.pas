@@ -53,8 +53,20 @@ Type
   end;
 
 Var
-  menu_status: byte;
+  menu_status: integer;
   last_record: integer;
+
+Procedure ProgName();
+Begin
+  SetFontColor(clBlack);
+  SetFontSize(28);
+  SetBrushColor(clWhite);
+  TextOut(210, 20, 'Программа "Зарплата"');
+  SetFontSize(20);
+  TextOut(210, 70, 'курсовая работа');
+  TextOut(210, 110, 'студента 935 группы');
+  TextOut(210, 150, 'Старшинова Виталия');
+end;
 
 Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
 Begin
@@ -559,6 +571,18 @@ Begin
   
 end;
 
+Procedure ConfirmExit();
+Begin
+  menu_status:= 2; // confirm exit;
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 195, 600);
+  FillRectangle(205, 20, 985, 585);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Подтвердить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
+
+  
+end;
+
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
@@ -570,6 +594,32 @@ Begin
     exit;
   
   case menu_status of
+    -1: // pre-menu
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+          begin
+            ClearWindow;
+            
+            menu_status:= 0; // main menu
+            SetPenColor(clBlack);
+            SetPenWidth(1);
+            SetBrushColor(clWhite);
+            DrawRectangle(200, 10, 990, 590);
+            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
+            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+          end;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            ;
+                    
+        end;
+      end;
+    
     0: // main menu
       begin
         if (x > button_x1) and (x < button_x2)
@@ -581,7 +631,7 @@ Begin
           
           if (y > button2_y1) and (y < button2_y2)
           then
-            TextOut(250, 50, 'Action 2');
+            ConfirmExit;
           
           if (y > button3_y1) and (y < button3_y2)
           then
@@ -651,15 +701,40 @@ Begin
             SetBrushColor(clWhite);
             DrawRectangle(200, 10, 990, 590);
             DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Button 2');
-            DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Button 3');
-            DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'Button 4');
+            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+
           end;
           
         end;
         
       end;
     
+    2: // confirm exit
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2) // yes
+          then
+            halt;
+          
+          if (y > button2_y1) and (y < button2_y2) // no
+          then
+          begin
+            ClearWindow;
+            
+            menu_status:= 0; // main menu
+            SetPenColor(clBlack);
+            SetPenWidth(1);
+            SetBrushColor(clWhite);
+            DrawRectangle(200, 10, 990, 590);
+            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
+            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+          end;
+        end;
+      
+      end;
+      
   end;
   
 end;
@@ -675,9 +750,25 @@ Begin
   SetBrushColor(clWhite);
   DrawRectangle(200, 10, 990, 590);
   DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Button 2');
-  DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Button 3');
-  DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'Button 4');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+  
+  OnMouseDown:= MenuMouseDown;
+  
+end;
+
+Procedure PreMenu();
+Begin
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= -1; // pre-menu
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  DrawRectangle(200, 10, 990, 590);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Пользователь');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Администратор');
+  ProgName;
   
   OnMouseDown:= MenuMouseDown;
   

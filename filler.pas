@@ -88,4 +88,6 @@ Begin
   writeln(f, 50);
   close(f);
   
+  halt;
+  
 end.

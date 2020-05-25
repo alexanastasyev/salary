@@ -12,6 +12,6 @@ Begin
   CenterWindow;
   SetWindowTitle('Salary');
     
-  MainMenu;
+  PreMenu;
   
 end.
