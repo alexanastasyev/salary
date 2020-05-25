@@ -142,7 +142,6 @@ Begin
   
 end;
   
-
 Procedure ProgName();
 Begin
   SetFontColor(clBlack);
@@ -558,7 +557,8 @@ Begin
     
   end;
   
-    
+  close(f);
+  
 end;
 
 Procedure ShowPrevious();
@@ -678,6 +678,7 @@ Begin
     
   end;
   
+  close(f);
   last_record:= i;
   
 end;
@@ -791,6 +792,7 @@ Begin
     
   end;
   
+  close(f);
   last_record:= i;
   
 end;
