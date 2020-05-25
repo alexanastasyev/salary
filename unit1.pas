@@ -7,6 +7,8 @@ Const
   height = 600;
   width = 1000;
   
+  // -------------------------
+  
   button_x1 = 10;
   button_x2 = 190;
   
@@ -27,6 +29,21 @@ Const
   
   // ---------------------------
   
+  field_x1 = 210;
+  field_x2 = 410;
+  
+  field1_y1 = 40;
+  field1_y2 = 70;
+  
+  field2_y1 = 120;
+  field2_y2 = 150;
+  
+  field3_y1 = 200;
+  field3_y2 = 230;
+  
+  
+  // ---------------------------
+  
   tax_perc = 13;
   soc_ins_perc = 7;
   pens_fund_perc = 5;
@@ -37,6 +54,10 @@ Const
   
   file_name = 'src/data_list.txt';
   file_amount_name = 'src/amount.txt';
+  
+  // ---------------------------
+  
+  password = 'salary';
 
 Type
   person = record
@@ -55,6 +76,7 @@ Type
 Var
   menu_status: integer;
   last_record: integer;
+  str: string;
 
 Procedure ProgName();
 Begin
@@ -94,6 +116,78 @@ Begin
   DrawRectangle(200, 10, 990, 590);
   DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
   DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+  
+end;
+
+procedure InputPassword(Key: integer);
+var
+  i: integer;
+  str_help: string;
+  
+begin 
+  SetFontColor(clBlack);
+  SetFontSize(16);
+  case key of
+    48..57, 65..90, 97..122, 32: // Char keys
+    begin
+       if (length(str)) < 16 then
+       begin
+         str:= str + LowerCase(chr(key));
+         TextOut(210, 60, str); 
+       end;
+    end;
+    8: // backspace
+      begin
+        str_help:= '';
+        for i:= 1 to (length(str)-1) do
+          str_help:= str_help + str[i];
+        str:= str_help;
+        SetBrushColor(clWhite);
+        FillRectangle(210, 60, 420, 300);
+        TextOut(210, 60, str);
+      end;
+  end;
+  
+ 
+end;
+
+Procedure AskPassword();
+Begin
+  ClearWindow;
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= -11; // ask password
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  DrawRectangle(200, 10, 990, 590);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Подтвердить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Назад');
+
+  
+  SetFontColor(clBlack);
+  SetFontSize(20);
+  SetBrushColor(clWhite);
+  TextOut(210, 20, 'Введите пароль:');
+  OnKeyDown:= InputPassword;
+
+end;
+
+Procedure AdminMainMenu();
+Begin
+  ClearWindow;
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= 10; // admin main menu
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  DrawRectangle(200, 10, 990, 590);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Добавить запись');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Удалить запись');
+  DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Выход');
   
 end;
 
@@ -599,6 +693,49 @@ Begin
   
 end;
 
+Procedure AdminConfirmExit();
+Begin
+  menu_status:= 12; // admin confirm exit;
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 195, 600);
+  FillRectangle(205, 20, 985, 585);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Подтвердить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
+
+  
+end;
+
+Procedure AddRecord();
+Var
+  f: text;
+  new_person: person;
+  
+Begin
+  menu_status:= 13; // admin add record;
+  
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 195, 600);
+  FillRectangle(205, 20, 985, 585);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Добавить');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
+  
+  SetFontColor(clBlack);
+  SetFontSize(12);
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  
+  TextOut(210, 20, 'Фамилия: ');
+  DrawRectangle(field_x1, field1_y1, field_x2, field1_y2);
+  
+  TextOut(210, 100, 'Должность: ');
+  DrawRectangle(field_x1, field2_y1, field_x2, field2_y2);
+  
+  TextOut(210, 180, 'Оклад: ');
+  DrawRectangle(field_x1, field3_y1, field_x2, field3_y2);
+  
+end;
+
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
@@ -610,6 +747,95 @@ Begin
     exit;
   
   case menu_status of
+    10: // admin main menu
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            AddRecord;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            ; // delete
+          
+          if (y > button3_y1) and (y < button3_y2)
+          then
+            AdminConfirmExit;
+          
+        end;
+      end;
+     
+     12: // admin confirm exit
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            halt;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+            AdminMainMenu;
+       
+       end;
+     end;
+     
+     13: // admin add record
+      begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            ; // add
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+             AdminMainMenu;
+          
+        end;
+      end;
+     
+    -11: // input password;
+       begin
+        if (x > button_x1) and (x < button_x2)
+        then
+        begin
+          if (y > button1_y1) and (y < button1_y2)
+          then
+            if (str = password)
+            then
+              AdminMainMenu
+            else
+            begin
+              SetFontSize(12);
+              SetFontColor(clRed);
+              TextOut(210, 90, 'Неверный пароль!');
+            end;
+          end;
+          
+          if (y > button2_y1) and (y < button2_y2)
+          then
+          begin
+            ClearWindow;
+            str:= '';
+            SetBrushColor(clWhite);
+            FillRectangle(1, 1, 200, 600);
+            
+            menu_status:= -1; // pre-menu
+            SetPenColor(clBlack);
+            SetPenWidth(1);
+            SetBrushColor(clWhite);
+            DrawRectangle(200, 10, 990, 590);
+            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Пользователь');
+            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Администратор');
+            ProgName;
+          end;
+          
+       end;
     -1: // pre-menu
       begin
         if (x > button_x1) and (x < button_x2)
@@ -621,7 +847,7 @@ Begin
           
           if (y > button2_y1) and (y < button2_y2)
           then
-            ;
+            AskPassword;
                     
         end;
       end;
@@ -745,5 +971,6 @@ end;
 
 Begin
   last_record:= 0;
+  str:= '';
   
 end.
