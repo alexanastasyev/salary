@@ -81,6 +81,8 @@ Var
   name: string;
   job: string;
   salary: string;
+  
+  admin: boolean;
 
 Procedure ProgName();
 Begin
@@ -351,6 +353,8 @@ end;
 
 Procedure AdminMainMenu();
 Begin
+  admin:= true;
+  
   ClearWindow;
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
@@ -360,9 +364,10 @@ Begin
   SetPenWidth(1);
   SetBrushColor(clWhite);
   DrawRectangle(200, 10, 990, 590);
-  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Добавить запись');
-  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Удалить запись');
-  DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Выход');
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Добавить запись');
+  DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Удалить запись');
+  DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'Выход');
   
 end;
 
@@ -1160,13 +1165,17 @@ Begin
         begin
           if (y > button1_y1) and (y < button1_y2)
           then
-            AddRecord;
+            ViewList;
           
           if (y > button2_y1) and (y < button2_y2)
           then
-            DeleteRecord;
+            AddRecord;
           
           if (y > button3_y1) and (y < button3_y2)
+          then
+            DeleteRecord;
+          
+          if (y > button4_y1) and (y < button4_y2)
           then
             AdminConfirmExit;
           
@@ -1367,15 +1376,7 @@ Begin
           if (y > button2_y1) and (y < button2_y2)
           then
             ConfirmExit;
-          
-          if (y > button3_y1) and (y < button3_y2)
-          then
-            TextOut(250, 50, 'Action 3');
-          
-          if (y > button4_y1) and (y < button4_y2)
-          then
-            TextOut(250, 50, 'Action 4');
-          
+                    
         end;
         
       end;
@@ -1427,7 +1428,11 @@ Begin
           
           if (y > button5_y1) and (y < button5_y2)
           then
-            MainMenu;
+            if (admin)
+            then
+              AdminMainMenu
+            else
+              MainMenu;
           
         end;
         
@@ -1475,5 +1480,9 @@ end;
 Begin
   last_record:= 0;
   str:= '';
+  name:= '';
+  job:= '';
+  salary:= '';
+  admin:= false;
   
 end.
