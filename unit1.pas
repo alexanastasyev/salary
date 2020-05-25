@@ -81,6 +81,22 @@ Begin
   
 end;
 
+Procedure MainMenu();
+Begin
+  ClearWindow;
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= 0; // main menu
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  SetBrushColor(clWhite);
+  DrawRectangle(200, 10, 990, 590);
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
+  
+end;
+
 Procedure ViewMenu();
 Begin
   SetBrushColor(clWhite);
@@ -601,17 +617,7 @@ Begin
         begin
           if (y > button1_y1) and (y < button1_y2)
           then
-          begin
-            ClearWindow;
-            
-            menu_status:= 0; // main menu
-            SetPenColor(clBlack);
-            SetPenWidth(1);
-            SetBrushColor(clWhite);
-            DrawRectangle(200, 10, 990, 590);
-            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
-          end;
+            MainMenu;
           
           if (y > button2_y1) and (y < button2_y2)
           then
@@ -692,18 +698,7 @@ Begin
           
           if (y > button5_y1) and (y < button5_y2)
           then
-          begin
-            ClearWindow;
-            
-            menu_status:= 0; // main menu
-            SetPenColor(clBlack);
-            SetPenWidth(1);
-            SetBrushColor(clWhite);
-            DrawRectangle(200, 10, 990, 590);
-            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
-
-          end;
+            MainMenu;
           
         end;
         
@@ -720,39 +715,13 @@ Begin
           
           if (y > button2_y1) and (y < button2_y2) // no
           then
-          begin
-            ClearWindow;
-            
-            menu_status:= 0; // main menu
-            SetPenColor(clBlack);
-            SetPenWidth(1);
-            SetBrushColor(clWhite);
-            DrawRectangle(200, 10, 990, 590);
-            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
-          end;
+            MainMenu
+
         end;
       
       end;
       
   end;
-  
-end;
-
-Procedure MainMenu();
-Begin
-  SetBrushColor(clWhite);
-  FillRectangle(1, 1, 200, 600);
-  
-  menu_status:= 0; // main menu
-  SetPenColor(clBlack);
-  SetPenWidth(1);
-  SetBrushColor(clWhite);
-  DrawRectangle(200, 10, 990, 590);
-  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
-  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Выход');
-  
-  OnMouseDown:= MenuMouseDown;
   
 end;
 
