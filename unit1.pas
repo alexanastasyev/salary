@@ -83,6 +83,65 @@ Var
   salary: string;
   
   admin: boolean;
+  
+  sum_salary: integer;
+  sum_tax: real;
+  sum_soc_ins: real;
+  sum_pens_fund: real;
+  sum_sick_list: real;
+  sum_union: real;
+  sum_on_hands: real;
+
+Procedure SumAll();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  i: integer;
+  
+Begin
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  sum_salary:= 0;
+  sum_tax:= 0;
+  sum_soc_ins:= 0;
+  sum_pens_fund:= 0;
+  sum_sick_list:= 0;
+  sum_union:= 0;
+  sum_on_hands:= 0;
+  
+  assign(f, file_name);
+  reset(f);
+  
+  for i:= 1 to amount do
+  begin
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+    sum_salary:= sum_salary + persons[i].salary;
+    sum_tax:= sum_tax + persons[i].tax;
+    sum_soc_ins:= sum_soc_ins + persons[i].soc_ins;
+    sum_pens_fund:= sum_pens_fund + persons[i].pens_fund;
+    sum_sick_list:= sum_sick_list + persons[i].sick_list;
+    sum_union:= sum_union + persons[i].union;
+    sum_on_hands:= sum_on_hands + persons[i].on_hands;
+    
+  end;
+  
+  close(f);
+  
+end;
+  
 
 Procedure ProgName();
 Begin
@@ -373,6 +432,7 @@ end;
 
 Procedure ViewMenu();
 Begin
+  SumAll;
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
@@ -430,6 +490,7 @@ Begin
   DrawRectangle(200, 10, 800, 590);
   DrawRectangle(200, 10, 870, 590);
   DrawRectangle(200, 10, 990, 590);
+  DrawRectangle(200, 560, 990, 590);
   
   DrawRectangle(200, 10, 990, 45);
   
@@ -445,6 +506,16 @@ Begin
   TextOut(805, 20, 'Профком');
   TextOut(880, 20, 'На руки');
   
+  TextOut(220, 570, 'Всего');
+  
+  TextOut(460, 570, IntToStr(sum_salary));
+  TextOut(530, 570, IntToStr(round(sum_tax)));
+  TextOut(595, 570, IntToStr(round(sum_soc_ins)));
+  TextOut(670, 570, IntToStr(round(sum_pens_fund)));
+  TextOut(740, 570, IntToStr(round(sum_sick_list)));
+  TextOut(805, 570, IntToStr(round(sum_union)));
+  TextOut(880, 570, IntToStr(round(sum_on_hands)));
+  
   
   SetFontStyle(fsNormal);
   
@@ -457,7 +528,7 @@ Begin
   for i:= 1 to amount do
   begin
     
-    if (i = 14)
+    if (i = 13)
     then
     begin
       last_record:= i - 1;
@@ -497,6 +568,7 @@ Var
   persons: array[1..1000] of person;
   i: integer;
   k: integer;
+  m: integer;
   
 Begin
   ViewMenu;
@@ -521,6 +593,7 @@ Begin
   DrawRectangle(200, 10, 800, 590);
   DrawRectangle(200, 10, 870, 590);
   DrawRectangle(200, 10, 990, 590);
+  DrawRectangle(200, 560, 990, 590);
   
   DrawRectangle(200, 10, 990, 45);
   
@@ -535,6 +608,16 @@ Begin
   TextOut(740, 20, 'Б. лист');
   TextOut(805, 20, 'Профком');
   TextOut(880, 20, 'На руки');
+  
+  TextOut(220, 570, 'Всего');
+  
+  TextOut(460, 570, IntToStr(sum_salary));
+  TextOut(530, 570, IntToStr(round(sum_tax)));
+  TextOut(595, 570, IntToStr(round(sum_soc_ins)));
+  TextOut(670, 570, IntToStr(round(sum_pens_fund)));
+  TextOut(740, 570, IntToStr(round(sum_sick_list)));
+  TextOut(805, 570, IntToStr(round(sum_union)));
+  TextOut(880, 570, IntToStr(round(sum_on_hands)));
   
   
   SetFontStyle(fsNormal);
@@ -561,11 +644,17 @@ Begin
     readln(f, persons[i].union);
     readln(f, persons[i].on_hands);
     
-    if (last_record - i < 26)
+    if (last_record mod 12) <> 0
+    then
+      m:= (last_record mod 12)
+    else
+      m:= 12;
+    
+    if (last_record - i <= (m + 11))
     then
     begin
       
-      if (k = 14)
+      if (k = 13)
       then
       begin
         close(f);
@@ -624,6 +713,7 @@ Begin
   DrawRectangle(200, 10, 800, 590);
   DrawRectangle(200, 10, 870, 590);
   DrawRectangle(200, 10, 990, 590);
+  DrawRectangle(200, 560, 990, 590);
   
   DrawRectangle(200, 10, 990, 45);
   
@@ -638,6 +728,15 @@ Begin
   TextOut(740, 20, 'Б. лист');
   TextOut(805, 20, 'Профком');
   TextOut(880, 20, 'На руки');
+  TextOut(220, 570, 'Всего');
+  
+  TextOut(460, 570, IntToStr(sum_salary));
+  TextOut(530, 570, IntToStr(round(sum_tax)));
+  TextOut(595, 570, IntToStr(round(sum_soc_ins)));
+  TextOut(670, 570, IntToStr(round(sum_pens_fund)));
+  TextOut(740, 570, IntToStr(round(sum_sick_list)));
+  TextOut(805, 570, IntToStr(round(sum_union)));
+  TextOut(880, 570, IntToStr(round(sum_on_hands)));
   
   
   SetFontStyle(fsNormal);
@@ -668,7 +767,7 @@ Begin
     then
     begin
       
-      if (k = 14)
+      if (k = 13)
       then
       begin
         close(f);
@@ -1484,5 +1583,7 @@ Begin
   job:= '';
   salary:= '';
   admin:= false;
+  
+  SumAll;
   
 end.
