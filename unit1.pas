@@ -69,8 +69,6 @@ Begin
   
 end;
 
-
-
 Procedure ViewMenu();
 Begin
   SetBrushColor(clWhite);
@@ -136,7 +134,9 @@ Begin
   reset(f);
   readln(f, amount);
   close(f);
-    
+  
+  last_record:= 0;
+  
   assign(f, file_name);
   reset(f);
   for i:= 1 to amount do
@@ -381,6 +381,184 @@ Begin
   
 end;
 
+Procedure SortByName();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  helper: person;
+  i, j: integer;  
+  
+Begin
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  assign(f, file_name);
+  reset(f);
+  
+  for i:= 1 to amount do
+  begin
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+  end;
+  
+  close(f);
+  
+  for i:= 1 to (amount - 1) do
+    for j:= 1 to (amount - 1) do
+      if (persons[j].surname > persons[j + 1].surname)
+      then
+      begin
+        helper.surname:= persons[j].surname;
+        helper.job:= persons[j].job;
+        helper.salary:= persons[j].salary;
+        helper.tax:= persons[j].tax;
+        helper.soc_ins:= persons[j].soc_ins;
+        helper.pens_fund:= persons[j].pens_fund;
+        helper.sick_list:= persons[j].sick_list;
+        helper.union:= persons[j].union;
+        helper.on_hands:= persons[j].on_hands;
+        
+        persons[j].surname:= persons[j + 1].surname;
+        persons[j].job:= persons[j + 1].job;
+        persons[j].salary:= persons[j + 1].salary;
+        persons[j].tax:= persons[j + 1].tax;
+        persons[j].soc_ins:= persons[j + 1].soc_ins;
+        persons[j].pens_fund:= persons[j + 1].pens_fund;
+        persons[j].sick_list:= persons[j + 1].sick_list;
+        persons[j].union:= persons[j + 1].union;
+        persons[j].on_hands:= persons[j + 1].on_hands;
+        
+        persons[j + 1].surname:= helper.surname;
+        persons[j + 1].job:= helper.job;
+        persons[j + 1].salary:= helper.salary;
+        persons[j + 1].tax:= helper.tax;
+        persons[j + 1].soc_ins:= helper.soc_ins;
+        persons[j + 1].pens_fund:= helper.pens_fund;
+        persons[j + 1].sick_list:= helper.sick_list;
+        persons[j + 1].union:= helper.union;
+        persons[j + 1].on_hands:= helper.on_hands;
+      end;
+  
+  assign(f, file_name);
+  rewrite(f);
+  for i:= 1 to amount do
+  begin
+    writeln(f, persons[i].surname);
+    writeln(f, persons[i].job);
+    writeln(f, persons[i].salary);
+    writeln(f, persons[i].tax);
+    writeln(f, persons[i].soc_ins);
+    writeln(f, persons[i].pens_fund);
+    writeln(f, persons[i].sick_list);
+    writeln(f, persons[i].union);
+    writeln(f, persons[i].on_hands);
+    
+  end;
+  
+  close(f);
+  
+end;
+
+Procedure SortBySalary();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  helper: person;
+  i, j: integer;  
+  
+Begin
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  assign(f, file_name);
+  reset(f);
+  
+  for i:= 1 to amount do
+  begin
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+    
+  end;
+  
+  close(f);
+  
+  for i:= 1 to (amount - 1) do
+    for j:= 1 to (amount - 1) do
+      if (persons[j].salary > persons[j + 1].salary)
+      then
+      begin
+        helper.surname:= persons[j].surname;
+        helper.job:= persons[j].job;
+        helper.salary:= persons[j].salary;
+        helper.tax:= persons[j].tax;
+        helper.soc_ins:= persons[j].soc_ins;
+        helper.pens_fund:= persons[j].pens_fund;
+        helper.sick_list:= persons[j].sick_list;
+        helper.union:= persons[j].union;
+        helper.on_hands:= persons[j].on_hands;
+        
+        persons[j].surname:= persons[j + 1].surname;
+        persons[j].job:= persons[j + 1].job;
+        persons[j].salary:= persons[j + 1].salary;
+        persons[j].tax:= persons[j + 1].tax;
+        persons[j].soc_ins:= persons[j + 1].soc_ins;
+        persons[j].pens_fund:= persons[j + 1].pens_fund;
+        persons[j].sick_list:= persons[j + 1].sick_list;
+        persons[j].union:= persons[j + 1].union;
+        persons[j].on_hands:= persons[j + 1].on_hands;
+        
+        persons[j + 1].surname:= helper.surname;
+        persons[j + 1].job:= helper.job;
+        persons[j + 1].salary:= helper.salary;
+        persons[j + 1].tax:= helper.tax;
+        persons[j + 1].soc_ins:= helper.soc_ins;
+        persons[j + 1].pens_fund:= helper.pens_fund;
+        persons[j + 1].sick_list:= helper.sick_list;
+        persons[j + 1].union:= helper.union;
+        persons[j + 1].on_hands:= helper.on_hands;
+      end;
+  
+  assign(f, file_name);
+  rewrite(f);
+  for i:= 1 to amount do
+  begin
+    writeln(f, persons[i].surname);
+    writeln(f, persons[i].job);
+    writeln(f, persons[i].salary);
+    writeln(f, persons[i].tax);
+    writeln(f, persons[i].soc_ins);
+    writeln(f, persons[i].pens_fund);
+    writeln(f, persons[i].sick_list);
+    writeln(f, persons[i].union);
+    writeln(f, persons[i].on_hands);
+    
+  end;
+  
+  close(f);
+  
+end;
+
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
@@ -435,34 +613,53 @@ Begin
               ShowNext;
           end;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // previous
           then
-            begin
-            if (y > button2_y1) and (y < button2_y2) // previous
+          begin
+            assign(f, file_amount_name);
+            reset(f);
+            readln(f, amount);
+            close(f);
+            
+            if (last_record > 13)
             then
-            begin
-              assign(f, file_amount_name);
-              reset(f);
-              readln(f, amount);
-              close(f);
-              
-              if (last_record > 13)
-              then
-                ShowPrevious;
-            end;
-          
+              ShowPrevious;
+          end;
+        
           if (y > button3_y1) and (y < button3_y2)
           then
-            TextOut(250, 50, 'Action 3');
+          begin
+            SortByName;
+            ViewList;
+          end;  
           
           if (y > button4_y1) and (y < button4_y2)
           then
-            TextOut(250, 50, 'Action 4');
+          begin
+            SortBySalary;
+            ViewList;
+          end;
+          
+          if (y > button5_y1) and (y < button5_y2)
+          then
+          begin
+            ClearWindow;
+            
+            menu_status:= 0; // main menu
+            SetPenColor(clBlack);
+            SetPenWidth(1);
+            SetBrushColor(clWhite);
+            DrawRectangle(200, 10, 990, 590);
+            DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
+            DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Button 2');
+            DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Button 3');
+            DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'Button 4');
+          end;
           
         end;
         
       end;
-    end;
+    
   end;
   
 end;
