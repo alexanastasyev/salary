@@ -77,6 +77,10 @@ Var
   menu_status: integer;
   last_record: integer;
   str: string;
+  
+  name: string;
+  job: string;
+  salary: string;
 
 Procedure ProgName();
 Begin
@@ -125,6 +129,11 @@ var
   str_help: string;
   
 begin 
+  
+  if not (menu_status = -11)
+  then
+    exit;
+  
   SetFontColor(clBlack);
   SetFontSize(16);
   case key of
@@ -145,6 +154,170 @@ begin
         SetBrushColor(clWhite);
         FillRectangle(210, 60, 420, 300);
         TextOut(210, 60, str);
+      end;
+  end;
+  
+ 
+end;
+
+Function InChar(number: integer): char;
+var
+  res: char;
+Begin
+  case number of
+    65: res:= 'ф';
+    66: res:= 'и';
+    67: res:= 'с';
+    68: res:= 'в';
+    69: res:= 'у';
+    70: res:= 'а';
+    71: res:= 'п';
+    72: res:= 'р';
+    73: res:= 'ш';
+    74: res:= 'о';
+    75: res:= 'л';
+    76: res:= 'д';
+    77: res:= 'ь';
+    78: res:= 'т';
+    79: res:= 'щ';
+    80: res:= 'з';
+    81: res:= 'й';
+    82: res:= 'к';
+    83: res:= 'ы';
+    84: res:= 'е';
+    85: res:= 'г';
+    86: res:= 'м';
+    87: res:= 'ц';
+    88: res:= 'ч';
+    89: res:= 'н';
+    90: res:= 'я';
+    
+    188: res:= 'б';
+    190: res:= 'ю';
+    186: res:= 'ж';
+    219: res:= 'х';
+    221: res:= 'ъ';
+    222: res:= 'э';
+  end;
+  
+  InChar:= res;
+end;
+
+procedure InputName(Key: integer);
+var
+  i: integer;
+  str_help: string;
+  
+begin 
+  
+  if not (menu_status = 13)
+  then
+    exit;
+   
+  SetFontColor(clBlack);
+  SetFontSize(12);
+  case key of
+    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Char keys
+    begin
+       if (length(name)) < 16 then
+       begin
+         if (name = '')
+         then
+           name:= name + UpperCase(InChar(key))
+         else
+           name:= name + LowerCase(InChar(key));
+         
+         TextOut(field_x1 + 2, field1_y1 + 2, name); 
+       end;
+    end;
+    8: // backspace
+      begin
+        str_help:= '';
+        for i:= 1 to (length(name)-1) do
+          str_help:= str_help + name[i];
+        name:= str_help;
+        SetBrushColor(clWhite);
+        FillRectangle(field_x1 + 2, field1_y1 + 2, field_x2 - 2, field1_y2 - 2);
+        TextOut(field_x1 + 2, field1_y1 + 2, name);
+      end;
+  end;
+  
+ 
+end;
+
+procedure InputJob(Key: integer);
+var
+  i: integer;
+  str_help: string;
+  
+begin 
+  
+  if not (menu_status = 13)
+  then
+    exit;
+    
+  SetFontColor(clBlack);
+  SetFontSize(12);
+  case key of
+    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Char keys
+    begin
+       if (length(job)) < 16 then
+       begin
+         if (job = '')
+         then
+           job:= job + UpperCase(InChar(key))
+         else
+           job:= job + LowerCase(InChar(key));
+         
+         TextOut(field_x1 + 2, field2_y1 + 2, job); 
+       end;
+    end;
+    8: // backspace
+      begin
+        str_help:= '';
+        for i:= 1 to (length(job)-1) do
+          str_help:= str_help + job[i];
+        job:= str_help;
+        SetBrushColor(clWhite);
+        FillRectangle(field_x1 + 2, field2_y1 + 2, field_x2 - 2, field2_y2 - 2);
+        TextOut(field_x1 + 2, field2_y1 + 2, job);
+      end;
+  end;
+  
+ 
+end;
+
+procedure InputSalary(Key: integer);
+var
+  i: integer;
+  str_help: string;
+  
+begin 
+  
+  if not (menu_status = 13)
+  then
+    exit;
+    
+  SetFontColor(clBlack);
+  SetFontSize(12);
+  case key of
+    48..57: // Numbers keys
+    begin
+       if (length(salary)) < 16 then
+       begin
+         salary:= salary + LowerCase(chr(key));
+         TextOut(field_x1 + 2, field3_y1 + 2, salary); 
+       end;
+    end;
+    8: // backspace
+      begin
+        str_help:= '';
+        for i:= 1 to (length(salary)-1) do
+          str_help:= str_help + salary[i];
+        salary:= str_help;
+        SetBrushColor(clWhite);
+        FillRectangle(field_x1 + 2, field3_y1 + 2, field_x2 - 2, field3_y2 - 2);
+        TextOut(field_x1 + 2, field2_y1 + 2, salary);
       end;
   end;
   
@@ -736,6 +909,60 @@ Begin
   
 end;
 
+Procedure CompleteAddRecord();
+Var
+  f: text;
+  amount: integer;
+  new_person: person;
+  
+Begin
+  
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+  
+  amount:= amount + 1;
+  
+  assign(f, file_name);
+  append(f);
+  
+  new_person.surname:= name;
+  new_person.job:= job;
+  new_person.salary:= StrToInt(salary);
+  new_person.tax := (tax_perc * new_person.salary) / 100;
+  new_person.soc_ins := (soc_ins_perc * new_person.salary) / 100;
+  new_person.pens_fund := (pens_fund_perc * new_person.salary) / 100;
+  new_person.sick_list := (sick_list_perc * new_person.salary) / 100;
+  new_person.union := (union_perc * new_person.salary) / 100;
+  new_person.on_hands := new_person.salary - new_person.tax - new_person.soc_ins - new_person.pens_fund - new_person.sick_list - new_person.union;
+  
+  writeln(f, new_person.surname);
+  writeln(f, new_person.job);
+  writeln(f, new_person.salary);
+  writeln(f, new_person.tax);
+  writeln(f, new_person.soc_ins);
+  writeln(f, new_person.pens_fund);
+  writeln(f, new_person.sick_list);
+  writeln(f, new_person.union);
+  writeln(f, new_person.on_hands);
+  
+  close(f);
+  
+  assign(f, file_amount_name);
+  rewrite(f);
+  writeln(f, amount);
+  close(f);
+  
+  AdminMainMenu;
+  
+  SetFontColor(clBlack);
+  SetBrushColor(clWhite);
+  SetFontSize(16);
+  TextOut(210, 20, 'Запись добавлена');
+  
+end;
+
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
@@ -790,12 +1017,44 @@ Begin
         begin
           if (y > button1_y1) and (y < button1_y2)
           then
-            ; // add
+            CompleteAddRecord; //add
           
           if (y > button2_y1) and (y < button2_y2)
           then
              AdminMainMenu;
           
+        end;
+        
+        if (x > field_x1) and (x < field_x2)
+        then
+        begin        
+          
+          if (y > field1_y1) and (y < field1_y2)
+          then
+          begin
+            name:= '';
+            OnKeyDown:= InputName;
+            FillRectangle(field_x1 + 2, field1_y1 + 2, field_x2 - 2, field1_y2 - 2);
+            TextOut(field_x1 + 2, field1_y1 + 2, name);
+          end;
+          
+          if (y > field2_y1) and (y < field2_y2)
+          then
+          begin
+            job:= '';
+            OnKeyDown:= InputJob;
+            SetBrushColor(clWhite);
+            FillRectangle(field_x1 + 2, field2_y1 + 2, field_x2 - 2, field2_y2 - 2);
+          end;
+          
+          if (y > field3_y1) and (y < field3_y2)
+          then
+          begin
+            salary:= '';
+            OnKeyDown:= InputSalary;
+            SetBrushColor(clWhite);
+            FillRectangle(field_x1 + 2, field3_y1 + 2, field_x2 - 2, field3_y2 - 2);
+          end;
         end;
       end;
      
