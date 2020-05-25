@@ -21,9 +21,150 @@ Const
   
   button4_y1 = 160;
   button4_y2 = 200;
+  
+  button5_y1 = 210;
+  button5_y2 = 250;
+  
+  // ---------------------------
+  
+  tax_perc = 13;
+  soc_ins_perc = 7;
+  pens_fund_perc = 5;
+  sick_list_perc = 5;
+  union_perc = 3;
+  
+  // ---------------------------
+  
+  file_name = 'src/data_list.txt';
+  file_amount_name = 'src/amount.txt';
+
+Type
+  person = record
+    surname: string[20];
+    job: string[20];
+    salary: integer;
+    tax: real;
+    soc_ins: real;
+    pens_fund: real;
+    sick_list: real;
+    union: real;
+    on_hands: real;
+    
+  end;
 
 Var
   menu_status: byte;
+
+Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
+Begin
+  SetPenColor(clBlack);
+  SetPenWidth(2);
+  SetBrushColor(clLightGray);
+  DrawRectangle(x1, y1, x2, y2);
+  FillRectangle(x1 + 2, y1 + 2, x2 - 2, y2 - 2);
+  SetFontColor(clBlack);
+  SetFontSize(16);
+  TextOut(x1 + 3, y1 + 3, s);
+  
+end;
+
+
+
+Procedure ViewMenu();
+Begin
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= 1; // view list
+  
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Следующие');
+  DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Предыдущие');
+  DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'По имени');
+  DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'По зарплате');
+  DrawButton(button_x1, button5_y1, button_x2, button5_y2, 'Главное меню');
+  
+end;
+
+Procedure ViewList();
+Var
+  f: text;
+  amount: integer;
+  persons: array[1..1000] of person;
+  i: integer;
+  
+Begin
+  ViewMenu;
+  
+  SetBrushColor(clWhite);
+  FillRectangle(200, 10, 990, 590);
+  
+  SetFontColor(clBlack);
+  SetFontSize(10);
+  SetBrushColor(clWhite);
+  
+  SetPenColor(clBlack);
+  SetPenWidth(1);
+  DrawRectangle(200, 10, 330, 590);
+  DrawRectangle(200, 10, 450, 590);
+  DrawRectangle(200, 10, 520, 590);
+  DrawRectangle(200, 10, 590, 590);
+  DrawRectangle(200, 10, 660, 590);
+  DrawRectangle(200, 10, 730, 590);
+  DrawRectangle(200, 10, 800, 590);
+  DrawRectangle(200, 10, 870, 590);
+  DrawRectangle(200, 10, 990, 590);
+  
+  DrawRectangle(200, 10, 990, 45);
+  
+  SetFontStyle(fsBold);
+  
+  TextOut(220, 20, 'Фамилия');
+  TextOut(340, 20, 'Должность');
+  TextOut(460, 20, 'Оклад');
+  TextOut(530, 20, 'Налог');
+  TextOut(595, 20, 'Соцстрах');
+  TextOut(670, 20, 'Пенс. ф.');
+  TextOut(740, 20, 'Б. лист');
+  TextOut(805, 20, 'Профком');
+  TextOut(880, 20, 'На руки');
+  
+  
+  SetFontStyle(fsNormal);
+  
+  assign(f, file_amount_name);
+  reset(f);
+  readln(f, amount);
+  close(f);
+    
+  assign(f, file_name);
+  reset(f);
+  for i:= 1 to amount do
+  begin
+    
+    readln(f, persons[i].surname);
+    readln(f, persons[i].job);
+    readln(f, persons[i].salary);
+    readln(f, persons[i].tax);
+    readln(f, persons[i].soc_ins);
+    readln(f, persons[i].pens_fund);
+    readln(f, persons[i].sick_list);
+    readln(f, persons[i].union);
+    readln(f, persons[i].on_hands);
+        
+    TextOut(220, 40 * i + 20, persons[i].surname);
+    TextOut(340, 40 * i + 20, persons[i].job);
+    TextOut(460, 40 * i + 20, IntToStr(persons[i].salary));
+    TextOut(530, 40 * i + 20, IntToStr(round(persons[i].tax)));
+    TextOut(600, 40 * i + 20, IntToStr(round(persons[i].soc_ins)));
+    TextOut(670, 40 * i + 20, IntToStr(round(persons[i].pens_fund)));
+    TextOut(740, 40 * i + 20, IntToStr(round(persons[i].sick_list)));
+    TextOut(810, 40 * i + 20, IntToStr(round(persons[i].union)));
+    TextOut(880, 40 * i + 20, IntToStr(round(persons[i].on_hands)));
+    
+  end;
+  
+    
+end;
 
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 Begin
@@ -39,7 +180,7 @@ Begin
         begin
           if (y > button1_y1) and (y < button1_y2)
           then
-            TextOut(250, 50, 'Action 1');
+            ViewList;
           
           if (y > button2_y1) and (y < button2_y2)
           then
@@ -61,32 +202,17 @@ Begin
   
 end;
 
-Procedure DrawField();
+Procedure MainMenu();
 Begin
+  SetBrushColor(clWhite);
+  FillRectangle(1, 1, 200, 600);
+  
+  menu_status:= 0; // main menu
   SetPenColor(clBlack);
   SetPenWidth(1);
   SetBrushColor(clWhite);
   DrawRectangle(200, 10, 990, 590);
-end;
-
-Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
-Begin
-  SetPenColor(clBlack);
-  SetPenWidth(2);
-  SetBrushColor(clLightGray);
-  DrawRectangle(x1, y1, x2, y2);
-  FillRectangle(x1 + 2, y1 + 2, x2 - 2, y2 - 2);
-  SetFontColor(clBlack);
-  SetFontSize(16);
-  TextOut(x1 + 3, y1 + 3, s);
-  
-end;
-
-Procedure MainMenu();
-Begin
-  menu_status:= 0; // main menu
-  DrawField;
-  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Button 1');
+  DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Показать записи');
   DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Button 2');
   DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'Button 3');
   DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'Button 4');
