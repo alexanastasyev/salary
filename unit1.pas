@@ -4,10 +4,11 @@ Uses
   GraphABC;
   
 Const
-  height = 600;
-  width = 1000;
+  height = 600; // Высота окна
+  width = 1000; // Ширина окна
   
   // -------------------------
+  // Координаты кнопок
   
   button_x1 = 10;
   button_x2 = 190;
@@ -28,6 +29,7 @@ Const
   button5_y2 = 250;
   
   // ---------------------------
+  // Координаты полей ввода
   
   field_x1 = 210;
   field_x2 = 410;
@@ -43,47 +45,52 @@ Const
   
   
   // ---------------------------
+  // Процентные ставки
   
-  tax_perc = 13;
-  soc_ins_perc = 7;
-  pens_fund_perc = 5;
-  sick_list_perc = 5;
-  union_perc = 3;
+  tax_perc = 13; // налог
+  soc_ins_perc = 7; // соц страхование
+  pens_fund_perc = 5; // пенсионный фонд
+  sick_list_perc = 5; // больничный лист
+  union_perc = 3; // профком
   
   // ---------------------------
+  // Пути к файлам
   
   file_name = 'src/data_list.txt';
   file_amount_name = 'src/amount.txt';
   
   // ---------------------------
   
-  password = 'salary';
+  password = 'salary'; // Пароль от администратора
 
 Type
+  
+  // Тип сотрудника
   person = record
-    surname: string[20];
-    job: string[20];
-    salary: integer;
-    tax: real;
-    soc_ins: real;
-    pens_fund: real;
-    sick_list: real;
-    union: real;
-    on_hands: real;
+    surname: string[20]; // Фамилия
+    job: string[20]; // Должность
+    salary: integer; // Оклад
+    tax: real; // Налог
+    soc_ins: real; // Соцстрах
+    pens_fund: real; // Пенс. фонд
+    sick_list: real; // Больничный лист
+    union: real; // Профком
+    on_hands: real; // На руки
     
   end;
 
 Var
-  menu_status: integer;
-  last_record: integer;
-  str: string;
+  menu_status: integer; // Переменная, хранящая номер состояния меню
+  last_record: integer; // Номер последней отображенной записи
+  str: string; // Строка ввода парооля
   
-  name: string;
-  job: string;
-  salary: string;
+  name: string; // Строка ввода имени
+  job: string; // Строка ввода должности
+  salary: string; // Строка ввода оклада
   
-  admin: boolean;
+  admin: boolean; // True, если в режиме админа
   
+  // Суммы по  соответствующим полям
   sum_salary: integer;
   sum_tax: real;
   sum_soc_ins: real;
@@ -92,6 +99,7 @@ Var
   sum_union: real;
   sum_on_hands: real;
 
+// Суммирует все денежные поля
 Procedure SumAll();
 Var
   f: text;
@@ -141,7 +149,8 @@ Begin
   close(f);
   
 end;
-  
+
+// Выводит название программы на старте  
 Procedure ProgName();
 Begin
   SetFontColor(clBlack);
@@ -154,6 +163,7 @@ Begin
   TextOut(210, 150, 'Старшинова Виталия');
 end;
 
+// Рисует форматированную кнопку
 Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
 Begin
   SetPenColor(clBlack);
@@ -167,6 +177,7 @@ Begin
   
 end;
 
+// Рисует главное меню пользователя
 Procedure MainMenu();
 Begin
   ClearWindow;
@@ -183,6 +194,7 @@ Begin
   
 end;
 
+// Процедура ввода пароля
 procedure InputPassword(Key: integer);
 var
   i: integer;
@@ -220,6 +232,7 @@ begin
  
 end;
 
+// Перевод кодов клавиш в русские символы
 Function InChar(number: integer): char;
 var
   res: char;
@@ -263,6 +276,7 @@ Begin
   InChar:= res;
 end;
 
+// Процедура ввода имени
 procedure InputName(Key: integer);
 var
   i: integer;
@@ -305,6 +319,7 @@ begin
  
 end;
 
+// Процедура ввода должности
 procedure InputJob(Key: integer);
 var
   i: integer;
@@ -347,6 +362,7 @@ begin
  
 end;
 
+// Процедура ввода оклада
 procedure InputSalary(Key: integer);
 var
   i: integer;
@@ -386,6 +402,7 @@ begin
  
 end;
 
+// Окно ввода пароля
 Procedure AskPassword();
 Begin
   ClearWindow;
@@ -409,6 +426,7 @@ Begin
 
 end;
 
+// Главное меню администратора
 Procedure AdminMainMenu();
 Begin
   admin:= true;
@@ -429,6 +447,7 @@ Begin
   
 end;
 
+// Меню просмотра записей
 Procedure ViewMenu();
 Begin
   SumAll;
@@ -445,6 +464,7 @@ Begin
   
 end;
 
+// Показать первые записи
 Procedure ViewList();
 Var
   f: text;
@@ -561,6 +581,7 @@ Begin
   
 end;
 
+// Показать следующие
 Procedure ShowPrevious();
 Var
   f: text;
@@ -683,6 +704,7 @@ Begin
   
 end;
 
+// Показать предыдущие
 Procedure ShowNext();
 Var
   f: text;
@@ -797,6 +819,7 @@ Begin
   
 end;
 
+// Сортировка по имени
 Procedure SortByName();
 Var
   f: text;
@@ -886,6 +909,7 @@ Begin
   
 end;
 
+// Сортировка по окладу
 Procedure SortBySalary();
 Var
   f: text;
@@ -975,6 +999,7 @@ Begin
   
 end;
 
+// Подтверждение выхода
 Procedure ConfirmExit();
 Begin
   menu_status:= 2; // confirm exit;
@@ -987,6 +1012,7 @@ Begin
   
 end;
 
+// Подтверждение выхода из админа
 Procedure AdminConfirmExit();
 Begin
   menu_status:= 12; // admin confirm exit;
@@ -999,6 +1025,7 @@ Begin
   
 end;
 
+// Окно добавления записи
 Procedure AddRecord();  
 Begin
   menu_status:= 13; // admin add record;
@@ -1026,6 +1053,7 @@ Begin
   
 end;
 
+// Добавление записи
 Procedure CompleteAddRecord();
 Var
   f: text;
@@ -1093,6 +1121,7 @@ Begin
   
 end;
 
+// Окно удаления записи
 Procedure DeleteRecord();
 Begin
   menu_status:= 14; // admin delete record;
@@ -1119,6 +1148,7 @@ Begin
   DrawRectangle(field_x1, field3_y1, field_x2, field3_y2);
 end;
 
+// Подтверждение удаления записи
 Procedure ConfirmDeletion();
 Begin
   if (name = '') or (job = '') or (salary = '')
@@ -1137,6 +1167,7 @@ Begin
   DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Отмена');
 end;
 
+// Удаление записи
 Procedure CompleteDelete();
 Var
   f: text;
@@ -1248,6 +1279,7 @@ Begin
   
 end;  
 
+// Обработчик нажатия мыши
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
@@ -1560,6 +1592,7 @@ Begin
   
 end;
 
+// Меню выбора режима
 Procedure PreMenu();
 Begin
   SetBrushColor(clWhite);
