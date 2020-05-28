@@ -2,10 +2,9 @@
 
 Uses
   GraphABC;
-  
 Uses
-  unit1; // Подключаем созданный модуль
-
+  actions in 'modules/actions.pas'; // Подключаем созданный модуль
+  
 Begin
   
   // Задаём настройки окна
