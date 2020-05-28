@@ -2,6 +2,8 @@
 
 Uses
   GraphABC;
+Uses
+  drawing;
 
 Const
   // ---------------------------
@@ -298,7 +300,7 @@ Begin
   end;
   
   close(f);
-  
+    
   if (sort_salary_up)
   then
     sort_salary_up:= false

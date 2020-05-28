@@ -96,5 +96,61 @@ Begin
   
 end;
 
+// Рисует стрелку сортировки по окладу
+Procedure DrawSalaryArrow(up: boolean);
+Begin
+  
+  SetBrushColor(clGray);
+  SetPenWidth(2);
+  SetPenColor(clBlack);
+  
+  if not(up)
+  then
+  begin
+    MoveTo(button_x1 + 150, button4_y1 + 30);
+    LineTo(button_x1 + 150, button4_y1 + 10);
+    LineTo(button_x1 + 140, button4_y1 + 20);
+    MoveTo(button_x1 + 150, button4_y1 + 10);
+    LineTo(button_x1 + 160, button4_y1 + 20);
+  end
+  else
+  begin
+    MoveTo(button_x1 + 150, button4_y1 + 10);
+    LineTo(button_x1 + 150, button4_y1 + 30);
+    LineTo(button_x1 + 140, button4_y1 + 20);
+    MoveTo(button_x1 + 150, button4_y1 + 30);
+    LineTo(button_x1 + 160, button4_y1 + 20);
+  end;
+  
+end;
+
+// Рисует стрелку сортировки по фамилии
+Procedure DrawSurnameArrow(up: boolean);
+Begin
+  
+  SetBrushColor(clGray);
+  SetPenWidth(2);
+  SetPenColor(clBlack);
+  
+  if not(up)
+  then
+  begin
+    MoveTo(button_x1 + 150, button3_y1 + 30);
+    LineTo(button_x1 + 150, button3_y1 + 10);
+    LineTo(button_x1 + 140, button3_y1 + 20);
+    MoveTo(button_x1 + 150, button3_y1 + 10);
+    LineTo(button_x1 + 160, button3_y1 + 20);
+  end
+  else
+  begin
+    MoveTo(button_x1 + 150, button3_y1 + 10);
+    LineTo(button_x1 + 150, button3_y1 + 30);
+    LineTo(button_x1 + 140, button3_y1 + 20);
+    MoveTo(button_x1 + 150, button3_y1 + 30);
+    LineTo(button_x1 + 160, button3_y1 + 20);
+  end;
+  
+end;
+
 Begin
 end.

@@ -355,6 +355,9 @@ Begin
   DrawButton(button_x1, button4_y1, button_x2, button4_y2, 'По окладу');
   DrawButton(button_x1, button5_y1, button_x2, button5_y2, 'Главное меню');
   
+  DrawSalaryArrow(sort_salary_up);
+  DrawSurnameArrow(sort_surname_up);
+  
 end;
 
 // Показать первые записи
