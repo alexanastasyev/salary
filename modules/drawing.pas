@@ -54,7 +54,9 @@ Begin
   FillRectangle(x1 + 2, y1 + 2, x2 - 2, y2 - 2);
   SetFontColor(clBlack);
   SetFontSize(16);
+  SetBrushStyle(bsClear);
   TextOut(x1 + 3, y1 + 3, s);
+  SetBrushStyle(bsSolid);
   
 end;
 
@@ -125,30 +127,18 @@ Begin
 end;
 
 // Рисует стрелку сортировки по фамилии
-Procedure DrawSurnameArrow(up: boolean);
+Procedure DrawSurnameLetters(up: boolean);
 Begin
   
-  SetBrushColor(clGray);
-  SetPenWidth(2);
-  SetPenColor(clBlack);
+  SetBrushColor(clLightGray);
+  SetFontSize(14);
+  SetFontColor(clBlack);
   
-  if not(up)
+  if (up)
   then
-  begin
-    MoveTo(button_x1 + 150, button3_y1 + 30);
-    LineTo(button_x1 + 150, button3_y1 + 10);
-    LineTo(button_x1 + 140, button3_y1 + 20);
-    MoveTo(button_x1 + 150, button3_y1 + 10);
-    LineTo(button_x1 + 160, button3_y1 + 20);
-  end
+    DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'По фамилии (а-я)')
   else
-  begin
-    MoveTo(button_x1 + 150, button3_y1 + 10);
-    LineTo(button_x1 + 150, button3_y1 + 30);
-    LineTo(button_x1 + 140, button3_y1 + 20);
-    MoveTo(button_x1 + 150, button3_y1 + 30);
-    LineTo(button_x1 + 160, button3_y1 + 20);
-  end;
+    DrawButton(button_x1, button3_y1, button_x2, button3_y2, 'По фамилии (я-а)');
   
 end;
 
