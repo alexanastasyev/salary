@@ -1,4 +1,8 @@
-﻿Unit drawing;
+﻿{
+  Модуль рисования основных графических элементов.
+}
+
+Unit drawing;
 
 Uses
   GraphABC;
@@ -45,6 +49,7 @@ Begin
 end;
 
 // Рисует форматированную кнопку
+// (x1, y1, x2, y2 - координаты кнопки; s - текст)
 Procedure DrawButton(x1, y1, x2, y2: integer; s: string);
 Begin
   SetPenColor(clBlack);
@@ -67,7 +72,7 @@ Begin
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
-  menu_status:= 0; // main menu
+  menu_status:= 0;
   SetPenColor(clBlack);
   SetPenWidth(1);
   SetBrushColor(clWhite);
@@ -77,7 +82,7 @@ Begin
   
 end;
 
-// Главное меню администратора
+// Рисует главное меню администратора
 Procedure AdminMainMenu();
 Begin
   admin:= true;
@@ -86,7 +91,7 @@ Begin
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
-  menu_status:= 10; // admin main menu
+  menu_status:= 10;
   SetPenColor(clBlack);
   SetPenWidth(1);
   SetBrushColor(clWhite);

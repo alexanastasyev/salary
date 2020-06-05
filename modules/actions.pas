@@ -1,4 +1,8 @@
-﻿Unit actions;
+﻿{
+  Модуль содержит основные процедуры, выполняемые программой.
+}
+
+Unit actions;
 
 Uses
   GraphABC;
@@ -57,7 +61,7 @@ Var
   sum_on_hands: real;
   
 
-// Суммирует все денежные поля
+// Суммирует все денежные поля и сохраняет результаты в глобальные переменные
 Procedure SumAll();
 Var
   f: text;
@@ -108,7 +112,7 @@ Begin
   
 end;
 
-// Процедура ввода пароля
+// Процедура ввода пароля, вызывается при попытке войти в режим администратора
 procedure InputPassword(Key: integer);
 var
   i: integer;
@@ -123,7 +127,7 @@ begin
   SetFontColor(clBlack);
   SetFontSize(16);
   case key of
-    48..57, 65..90, 97..122, 32: // Char keys
+    48..57, 65..90, 97..122, 32: // Символьные клавиши + пробел
     begin
        if (length(str)) < 16 then
        begin
@@ -146,7 +150,7 @@ begin
  
 end;
 
-// Перевод кодов клавиш в русские символы
+// Функция принимает номер кода клавиши и возварщает соответствующую ему букву (кириллица)
 Function InChar(number: integer): char;
 var
   res: char;
@@ -190,7 +194,7 @@ Begin
   InChar:= res;
 end;
 
-// Процедура ввода имени
+// Процедура ввода имени, вызывается при добавлении нового сотрудника
 procedure InputName(Key: integer);
 var
   i: integer;
@@ -205,7 +209,7 @@ begin
   SetFontColor(clBlack);
   SetFontSize(12);
   case key of
-    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Char keys
+    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Символьные клавиши
     begin
        if (length(name)) < 16 then
        begin
@@ -233,7 +237,7 @@ begin
  
 end;
 
-// Процедура ввода должности
+// Процедура ввода должности, вызывается при добавлении нового сотрудника
 procedure InputJob(Key: integer);
 var
   i: integer;
@@ -248,7 +252,7 @@ begin
   SetFontColor(clBlack);
   SetFontSize(12);
   case key of
-    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Char keys
+    65..90, 97..122, 186, 188, 190, 219, 221, 222: // Символьные клавиши
     begin
        if (length(job)) < 16 then
        begin
@@ -276,7 +280,7 @@ begin
  
 end;
 
-// Процедура ввода оклада
+// Процедура ввода оклада, вызывается при добавлении нового сотрудника
 procedure InputSalary(Key: integer);
 var
   i: integer;
@@ -291,7 +295,7 @@ begin
   SetFontColor(clBlack);
   SetFontSize(12);
   case key of
-    48..57: // Numbers keys
+    48..57: // Числовые клавиши
     begin
        if (length(salary)) < 16 then
        begin
@@ -323,7 +327,7 @@ Begin
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
-  menu_status:= -11; // ask password
+  menu_status:= -11;
   SetPenColor(clBlack);
   SetPenWidth(1);
   SetBrushColor(clWhite);
@@ -347,7 +351,7 @@ Begin
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
-  menu_status:= 1; // view list
+  menu_status:= 1;
   
   DrawButton(button_x1, button1_y1, button_x2, button1_y2, 'Следующие');
   DrawButton(button_x1, button2_y1, button_x2, button2_y2, 'Предыдущие');
@@ -360,7 +364,7 @@ Begin
   
 end;
 
-// Показать первые записи
+// Процедура показывает первые записи из базы данных
 Procedure ViewList();
 Var
   f: text;
@@ -477,7 +481,7 @@ Begin
   
 end;
 
-// Показать следующие
+// Показывает следующие записи
 Procedure ShowPrevious();
 Var
   f: text;
@@ -600,7 +604,7 @@ Begin
   
 end;
 
-// Показать предыдущие
+// Показывает предыдущие записи
 Procedure ShowNext();
 Var
   f: text;
@@ -715,10 +719,10 @@ Begin
   
 end;
 
-// Подтверждение выхода
+// Подтверждение выхода из программы
 Procedure ConfirmExit();
 Begin
-  menu_status:= 2; // confirm exit;
+  menu_status:= 2;
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 195, 600);
   FillRectangle(205, 20, 985, 585);
@@ -728,10 +732,10 @@ Begin
   
 end;
 
-// Подтверждение выхода из админа
+// Подтверждение выхода из программы (режим администратора)
 Procedure AdminConfirmExit();
 Begin
-  menu_status:= 12; // admin confirm exit;
+  menu_status:= 12;
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 195, 600);
   FillRectangle(205, 20, 985, 585);
@@ -744,7 +748,7 @@ end;
 // Окно добавления записи
 Procedure AddRecord();  
 Begin
-  menu_status:= 13; // admin add record;
+  menu_status:= 13;
   
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 195, 600);
@@ -840,7 +844,7 @@ end;
 // Окно удаления записи
 Procedure DeleteRecord();
 Begin
-  menu_status:= 14; // admin delete record;
+  menu_status:= 14;
   
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 195, 600);
@@ -995,68 +999,75 @@ Begin
   
 end;  
 
-// Обработчик нажатия мыши
+{
+  Процедура обработки нажатия мыши
+  
+  Процедура сравнивает координаты щелчка мыши с координатами кнопок в текущем меню
+  (состояние текущего меню хранится в переменной menu_status)
+  и, если была нажата какая-либо кнопка, выполняет соответствующее действие 
+  или вызывает соответствующую процедуру.
+}  
 Procedure MenuMouseDown(x, y, mousebutton: integer);
 var
   f: text;
   amount: integer;
   
 Begin
-  if (mousebutton = 2)
+  if (mousebutton = 2) // Если нажата ЛКМ, то ничего не делаем
   then
     exit;
   
   case menu_status of
-    10: // admin main menu
+    10: // Главное меню администратора
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Просмотр записей
           then
             ViewList;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2)  // Добавление записей
           then
             AddRecord;
           
-          if (y > button3_y1) and (y < button3_y2)
+          if (y > button3_y1) and (y < button3_y2)  // Удаление записей
           then
             DeleteRecord;
           
-          if (y > button4_y1) and (y < button4_y2)
+          if (y > button4_y1) and (y < button4_y2)  // Выход
           then
             AdminConfirmExit;
           
         end;
       end;
      
-     12: // admin confirm exit
+     12: // Подтверждение выхода из программы (режим администратора)
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2)  // Да
           then
             halt;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Нет
           then
             AdminMainMenu;
        
        end;
      end;
      
-     13: // admin add record
+     13: // Добавление записи
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2)  // Добавить
           then
-            CompleteAddRecord; //add
+            CompleteAddRecord;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Отмена
           then
              AdminMainMenu;
           
@@ -1095,16 +1106,16 @@ Begin
         end;
       end;
      
-     14: // admin delete record
+     14: // Удаление записи
        begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Удалить
           then
             ConfirmDeletion;  
             
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Отмена
           then
             AdminMainMenu;      
           
@@ -1144,28 +1155,27 @@ Begin
                   
        end;
      
-     15: // confirm deletion
+     15: // Подтверждение удаления
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Подтвердить
           then
             CompleteDelete;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Удалить
           then
             AdminMainMenu;
           
         end;
       end;
      
-    -11: // input password;
-       begin
+    -11: // Ввод пароля
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Подтвердить
           then
             if (str = password)
             then
@@ -1176,7 +1186,6 @@ Begin
               SetFontColor(clRed);
               TextOut(210, 90, 'Неверный пароль!');
             end;
-          end;
           
           if (y > button2_y1) and (y < button2_y2)
           then
@@ -1186,7 +1195,7 @@ Begin
             SetBrushColor(clWhite);
             FillRectangle(1, 1, 200, 600);
             
-            menu_status:= -1; // pre-menu
+            menu_status:= -1;
             SetPenColor(clBlack);
             SetPenWidth(1);
             SetBrushColor(clWhite);
@@ -1197,32 +1206,32 @@ Begin
           end;
           
        end;
-    -1: // pre-menu
+    -1: // Выбор режима
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Пользователь
           then
             MainMenu;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Администратор
           then
             AskPassword;
                     
         end;
       end;
     
-    0: // main menu
+    0: // Главное меню (пользователь)
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2)
+          if (y > button1_y1) and (y < button1_y2) // Просмотр записей
           then
             ViewList;
           
-          if (y > button2_y1) and (y < button2_y2)
+          if (y > button2_y1) and (y < button2_y2) // Выход
           then
             ConfirmExit;
                     
@@ -1230,12 +1239,12 @@ Begin
         
       end;
     
-    1: // view menu
+    1: // Меню просмотра записей
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2) // next
+          if (y > button1_y1) and (y < button1_y2) // Следующие
           then
           begin
             assign(f, file_amount_name);
@@ -1248,7 +1257,7 @@ Begin
               ShowNext;
           end;
           
-          if (y > button2_y1) and (y < button2_y2) // previous
+          if (y > button2_y1) and (y < button2_y2) // Предыдущие
           then
           begin
             assign(f, file_amount_name);
@@ -1261,21 +1270,21 @@ Begin
               ShowPrevious;
           end;
         
-          if (y > button3_y1) and (y < button3_y2)
+          if (y > button3_y1) and (y < button3_y2) // Сортировка по фамилии
           then
           begin
             SortByName;
             ViewList;
           end;  
           
-          if (y > button4_y1) and (y < button4_y2)
+          if (y > button4_y1) and (y < button4_y2) // Сортировка по окладу
           then
           begin
             SortBySalary;
             ViewList;
           end;
           
-          if (y > button5_y1) and (y < button5_y2)
+          if (y > button5_y1) and (y < button5_y2) // Главное меню
           then
             if (admin)
             then
@@ -1287,16 +1296,16 @@ Begin
         
       end;
     
-    2: // confirm exit
+    2: // Подтверждение выхода
       begin
         if (x > button_x1) and (x < button_x2)
         then
         begin
-          if (y > button1_y1) and (y < button1_y2) // yes
+          if (y > button1_y1) and (y < button1_y2) // Да
           then
             halt;
           
-          if (y > button2_y1) and (y < button2_y2) // no
+          if (y > button2_y1) and (y < button2_y2) // Нет
           then
             MainMenu
 
@@ -1314,7 +1323,7 @@ Begin
   SetBrushColor(clWhite);
   FillRectangle(1, 1, 200, 600);
   
-  menu_status:= -1; // pre-menu
+  menu_status:= -1;
   SetPenColor(clBlack);
   SetPenWidth(1);
   SetBrushColor(clWhite);
@@ -1328,6 +1337,8 @@ Begin
 end;
 
 Begin
+  
+  // Обнуление всех глобальных переменных
   last_record:= 0;
   str:= '';
   name:= '';

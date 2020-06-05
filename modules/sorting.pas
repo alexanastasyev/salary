@@ -1,4 +1,10 @@
-﻿Unit sorting;
+﻿{
+  Модуль сортировки записей.
+  
+  Все сортировки реализованы методом пузырьков
+}
+
+Unit sorting;
 
 Uses
   GraphABC;
@@ -31,8 +37,8 @@ Type
   end;
 
 Var
-  sort_salary_up: boolean;
-  sort_surname_up: boolean;
+  sort_salary_up: boolean; // Сортировать по возрастанию / убыванию оклада
+  sort_surname_up: boolean; // Сортировать по фамилии А-Я / Я-А
 
 // Сортировка по имени
 Procedure SortByName();
